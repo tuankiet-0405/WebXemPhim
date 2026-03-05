@@ -1,0 +1,406 @@
+<html lang="vi"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniStream - Anime Trực Tuyến</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #404040; }
+        
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Custom Range Slider for Video Player */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            background: #a855f7;
+            margin-top: -5px; 
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            border-radius: 1px;
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-slate-300 min-h-screen flex flex-col selection:bg-purple-500/30 selection:text-purple-200">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 w-full glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Mobile Menu -->
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-slate-400 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:hamburger-menu-linear" width="24" stroke-width="1.5"></iconify-icon>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-900/20">
+                        <iconify-icon icon="solar:play-circle-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    </div>
+                    <span class="text-white font-semibold tracking-tight text-lg hidden sm:block">ANISTREAM</span>
+                </div>
+            </div>
+
+            <!-- Smart Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-lg mx-auto relative group">
+                <div class="absolute inset-y-0 left-3 flex items-center text-slate-500 group-focus-within:text-purple-500 transition-colors">
+                    <iconify-icon icon="solar:magnifer-linear" width="20" stroke-width="1.5"></iconify-icon>
+                </div>
+                <input type="text" placeholder="Tìm kiếm anime, thể loại..." class="w-full bg-[#0f0f0f] border border-white/5 focus:border-purple-500/30 rounded-xl py-2 pl-10 pr-4 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:ring-1 focus:ring-purple-500/30 transition-all shadow-inner shadow-black/50">
+                <div class="absolute inset-y-0 right-3 flex items-center">
+                    <span class="text-[10px] border border-white/10 rounded px-1.5 py-0.5 text-slate-500">Ctrl K</span>
+                </div>
+            </div>
+
+            <!-- User Actions -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <button class="relative text-slate-400 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:bell-linear" width="22" stroke-width="1.5"></iconify-icon>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-purple-500 rounded-full border border-neutral-900"></span>
+                </button>
+                <button class="text-slate-400 hover:text-red-400 transition-colors hidden sm:block">
+                    <iconify-icon icon="solar:heart-linear" width="22" stroke-width="1.5"></iconify-icon>
+                </button>
+                <div class="w-9 h-9 rounded-full bg-neutral-800 border border-white/10 overflow-hidden cursor-pointer hover:border-purple-500/50 transition-colors">
+                    <img src="https://ui-avatars.com/api/?name=User&amp;background=27272a&amp;color=a1a1aa" alt="User" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 max-w-7xl mx-auto w-full">
+        
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="hidden lg:block w-64 pt-8 pr-6 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto hide-scrollbar">
+            <nav class="space-y-8">
+                <div>
+                    <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 px-3">Menu Chính</h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-purple-500/10 text-purple-400 font-medium">
+                                <iconify-icon icon="solar:home-smile-linear" width="20" stroke-width="1.5"></iconify-icon>
+                                Trang chủ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all group">
+                                <iconify-icon icon="solar:compass-linear" width="20" stroke-width="1.5" class="group-hover:text-purple-400 transition-colors"></iconify-icon>
+                                Khám phá
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all group">
+                                <iconify-icon icon="solar:bookmark-linear" width="20" stroke-width="1.5" class="group-hover:text-purple-400 transition-colors"></iconify-icon>
+                                Đã lưu
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all group">
+                                <iconify-icon icon="solar:history-linear" width="20" stroke-width="1.5" class="group-hover:text-purple-400 transition-colors"></iconify-icon>
+                                Lịch sử
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 px-3">Thể Loại</h3>
+                    <div class="grid grid-cols-2 gap-2 px-1">
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Hành động</a>
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Tình cảm</a>
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Đời thường</a>
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Hài hước</a>
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Phiêu lưu</a>
+                        <a href="#" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Kinh dị</a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0 py-6 px-4 md:px-6 space-y-10 pb-20">
+
+            <!-- Featured / Video Player Section -->
+            <section class="w-full">
+                <div class="relative w-full aspect-video md:aspect-[21/9] bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl shadow-black group">
+                    <!-- Video Background / Poster -->
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" alt="Featured Anime" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent"></div>
+                    
+                    <!-- Player Controls Overlay (Simulated) -->
+                    <div class="absolute inset-0 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-[2px]">
+                        <!-- Top Controls -->
+                        <div class="flex justify-between items-start">
+                            <span class="px-3 py-1 bg-black/60 rounded-full text-xs font-medium text-white backdrop-blur-md border border-white/10">Tập 24: Trận chiến cuối cùng</span>
+                            <button class="text-white/80 hover:text-white"><iconify-icon icon="solar:settings-linear" width="24" stroke-width="1.5"></iconify-icon></button>
+                        </div>
+
+                        <!-- Center Play Button -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <button class="w-16 h-16 rounded-full bg-purple-600/90 text-white flex items-center justify-center hover:bg-purple-500 hover:scale-110 transition-all shadow-lg shadow-purple-900/40 pl-1">
+                                <iconify-icon icon="solar:play-bold" width="32"></iconify-icon>
+                            </button>
+                        </div>
+
+                        <!-- Bottom Controls -->
+                        <div class="space-y-3">
+                            <!-- Progress Bar -->
+                            <div class="flex items-center gap-3 text-xs font-medium text-slate-300">
+                                <span>14:30</span>
+                                <div class="relative flex-1 h-1 bg-white/20 rounded-full cursor-pointer group/slider">
+                                    <div class="absolute top-0 left-0 h-full w-[65%] bg-purple-500 rounded-full"></div>
+                                    <div class="absolute top-1/2 -translate-y-1/2 left-[65%] w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover/slider:opacity-100 transition-opacity"></div>
+                                </div>
+                                <span>24:00</span>
+                            </div>
+                            
+                            <!-- Control Buttons -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4 text-white">
+                                    <button><iconify-icon icon="solar:skip-previous-bold" width="20"></iconify-icon></button>
+                                    <button><iconify-icon icon="solar:pause-bold" width="24"></iconify-icon></button>
+                                    <button><iconify-icon icon="solar:skip-next-bold" width="20"></iconify-icon></button>
+                                    <div class="flex items-center gap-2 group/vol">
+                                        <iconify-icon icon="solar:volume-high-bold" width="20"></iconify-icon>
+                                        <div class="w-0 overflow-hidden group-hover/vol:w-20 transition-all duration-300">
+                                            <div class="h-1 w-16 bg-white/20 rounded-full ml-2 relative">
+                                                <div class="absolute left-0 top-0 h-full w-[80%] bg-white rounded-full"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-white/90">
+                                    <span class="text-xs font-medium bg-white/10 px-2 py-0.5 rounded border border-white/5">1080p</span>
+                                    <button><iconify-icon icon="solar:full-screen-bold" width="20"></iconify-icon></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info (Visible when controls hidden or at bottom) -->
+                    <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full md:w-2/3 group-hover:opacity-0 transition-opacity duration-300">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-0.5 bg-purple-600 text-white text-[10px] font-bold rounded tracking-wider">MỚI</span>
+                            <span class="text-purple-400 text-xs font-medium">Hành động • Phép thuật</span>
+                        </div>
+                        <h1 class="text-2xl md:text-4xl font-bold text-white mb-2 leading-tight tracking-tight">Cyber Blade: Chronicles</h1>
+                        <p class="text-slate-300 text-sm line-clamp-2 md:line-clamp-none max-w-lg mb-4">Trong một thế giới tương lai nơi ma thuật gặp gỡ công nghệ, Kaito phải tìm ra bí mật về thanh kiếm cổ xưa trước khi tập đoàn Shadow chiếm lấy nó.</p>
+                        <div class="flex items-center gap-3">
+                            <button class="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
+                                <iconify-icon icon="solar:play-bold" width="18"></iconify-icon>
+                                Xem ngay
+                            </button>
+                            <button class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-md border border-white/5">
+                                <iconify-icon icon="solar:bookmark-linear" width="20" stroke-width="1.5"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ad Banner (Non-intrusive) -->
+            <div class="w-full bg-[#111] border border-white/5 rounded-lg p-3 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-purple-900/20 p-2 rounded-lg text-purple-400">
+                        <iconify-icon icon="solar:star-fall-linear" width="20"></iconify-icon>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-slate-300">Quảng cáo tài trợ</p>
+                        <p class="text-[10px] text-slate-500">Đăng ký Premium để loại bỏ quảng cáo &amp; xem 4K.</p>
+                    </div>
+                </div>
+                <button class="text-xs text-purple-400 hover:text-purple-300 font-medium whitespace-nowrap">Tìm hiểu thêm</button>
+            </div>
+
+            <!-- Continue Watching -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-medium text-white tracking-tight flex items-center gap-2">
+                        <iconify-icon icon="solar:clock-circle-linear" class="text-purple-500"></iconify-icon>
+                        Tiếp tục xem
+                    </h2>
+                    <div class="flex gap-2">
+                        <button class="w-8 h-8 rounded-full border border-white/5 bg-[#151515] hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                            <iconify-icon icon="solar:alt-arrow-left-linear" width="16"></iconify-icon>
+                        </button>
+                        <button class="w-8 h-8 rounded-full border border-white/5 bg-[#151515] hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                            <iconify-icon icon="solar:alt-arrow-right-linear" width="16"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x">
+                    <!-- Card 1 -->
+                    <div class="min-w-[200px] w-[200px] snap-start group cursor-pointer">
+                        <div class="relative aspect-video rounded-xl overflow-hidden mb-2">
+                            <img src="https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <iconify-icon icon="solar:play-circle-linear" class="text-white text-4xl drop-shadow-lg"></iconify-icon>
+                            </div>
+                            <!-- Progress -->
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-white/20">
+                                <div class="h-full w-[70%] bg-purple-500"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-medium text-slate-200 truncate group-hover:text-purple-400 transition-colors">Blue Lock: Episode 12</h3>
+                        <p class="text-xs text-slate-500">Còn 8 phút</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="min-w-[200px] w-[200px] snap-start group cursor-pointer">
+                        <div class="relative aspect-video rounded-xl overflow-hidden mb-2">
+                            <img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&amp;w=600&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                            <!-- Progress -->
+                            <div class="absolute bottom-0 left-0 w-full h-1 bg-white/20">
+                                <div class="h-full w-[30%] bg-purple-500"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-medium text-slate-200 truncate group-hover:text-purple-400 transition-colors">Chainsaw Man: Episode 5</h3>
+                        <p class="text-xs text-slate-500">Còn 18 phút</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommended Grid -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-medium text-white tracking-tight">Đề xuất cho bạn</h2>
+                    <a href="#" class="text-xs font-medium text-purple-500 hover:text-purple-400">Xem tất cả</a>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 gap-y-8">
+                    
+                    <!-- Movie Item 1 -->
+                    <div class="group relative cursor-pointer">
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg shadow-black/40">
+                            <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Poster" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-yellow-400 flex items-center gap-1 border border-white/5">
+                                <iconify-icon icon="solar:star-bold" width="10"></iconify-icon> 9.8
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            
+                            <!-- Hover Actions -->
+                            <div class="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center">
+                                <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
+                                    <iconify-icon icon="solar:play-bold" width="16"></iconify-icon>
+                                </button>
+                                <button class="w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 flex items-center justify-center hover:bg-black hover:text-red-500 transition-colors">
+                                    <iconify-icon icon="solar:heart-linear" width="16"></iconify-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-200 group-hover:text-purple-400 transition-colors leading-tight">Neon Genesis</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-slate-500 border border-white/10 rounded px-1">HD</span>
+                            <span class="text-xs text-slate-500">Mecha</span>
+                        </div>
+                    </div>
+
+                    <!-- Movie Item 2 -->
+                    <div class="group relative cursor-pointer">
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg shadow-black/40">
+                            <img src="https://images.unsplash.com/photo-1560972550-aba3456b5564?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Poster" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-yellow-400 flex items-center gap-1 border border-white/5">
+                                <iconify-icon icon="solar:star-bold" width="10"></iconify-icon> 8.5
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div class="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center">
+                                <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"><iconify-icon icon="solar:play-bold" width="16"></iconify-icon></button>
+                                <button class="w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 flex items-center justify-center hover:bg-black hover:text-red-500 transition-colors"><iconify-icon icon="solar:heart-linear" width="16"></iconify-icon></button>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-200 group-hover:text-purple-400 transition-colors leading-tight">Spirit Hunter</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-slate-500 border border-white/10 rounded px-1">FHD</span>
+                            <span class="text-xs text-slate-500">Kinh dị</span>
+                        </div>
+                    </div>
+
+                    <!-- Movie Item 3 -->
+                    <div class="group relative cursor-pointer">
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg shadow-black/40">
+                            <img src="https://images.unsplash.com/photo-1607604276583-eef5f0b7e675?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Poster" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-yellow-400 flex items-center gap-1 border border-white/5">
+                                <iconify-icon icon="solar:star-bold" width="10"></iconify-icon> 9.0
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div class="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center">
+                                <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"><iconify-icon icon="solar:play-bold" width="16"></iconify-icon></button>
+                                <button class="w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 flex items-center justify-center hover:bg-black hover:text-red-500 transition-colors"><iconify-icon icon="solar:heart-linear" width="16"></iconify-icon></button>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-200 group-hover:text-purple-400 transition-colors leading-tight">Pixel World</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-slate-500 border border-white/10 rounded px-1">4K</span>
+                            <span class="text-xs text-slate-500">Isekai</span>
+                        </div>
+                    </div>
+
+                    <!-- Movie Item 4 -->
+                    <div class="group relative cursor-pointer">
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg shadow-black/40">
+                            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Poster" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                             <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-yellow-400 flex items-center gap-1 border border-white/5">
+                                <iconify-icon icon="solar:star-bold" width="10"></iconify-icon> 7.9
+                            </div>
+                             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div class="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center">
+                                <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"><iconify-icon icon="solar:play-bold" width="16"></iconify-icon></button>
+                                <button class="w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 flex items-center justify-center hover:bg-black hover:text-red-500 transition-colors"><iconify-icon icon="solar:heart-linear" width="16"></iconify-icon></button>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-200 group-hover:text-purple-400 transition-colors leading-tight">Dark Horizons</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-slate-500 border border-white/10 rounded px-1">HD</span>
+                            <span class="text-xs text-slate-500">Hành động</span>
+                        </div>
+                    </div>
+                     <!-- Movie Item 5 (Hidden on smaller screens if needed, but grid handles it) -->
+                    <div class="group relative cursor-pointer hidden xl:block">
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg shadow-black/40">
+                            <img src="https://images.unsplash.com/photo-1514306191717-45224512c2d2?q=80&amp;w=600&amp;auto=format&amp;fit=crop" alt="Poster" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-1.5 py-0.5 rounded text-[10px] font-bold text-yellow-400 flex items-center gap-1 border border-white/5">
+                                <iconify-icon icon="solar:star-bold" width="10"></iconify-icon> 9.2
+                            </div>
+                             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div class="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between items-center">
+                                <button class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"><iconify-icon icon="solar:play-bold" width="16"></iconify-icon></button>
+                                <button class="w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 flex items-center justify-center hover:bg-black hover:text-red-500 transition-colors"><iconify-icon icon="solar:heart-linear" width="16"></iconify-icon></button>
+                            </div>
+                        </div>
+                        <h3 class="text-sm font-semibold text-slate-200 group-hover:text-purple-400 transition-colors leading-tight">Star Dust</h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] text-slate-500 border border-white/10 rounded px-1">HD</span>
+                            <span class="text-xs text-slate-500">Tình cảm</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body></html>
