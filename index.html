@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Stream</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #020617;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e11d48;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .search-box input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .banner {
+            height: 350px;
+            background: url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba") center/cover;
+            display: flex;
+            align-items: center;
+            padding-left: 50px;
+        }
+
+        .banner h1 {
+            font-size: 48px;
+        }
+
+        .container {
+            padding: 30px 50px;
+        }
+
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .movie-card {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .movie-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .movie-info {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .movie-card:hover .movie-info {
+            opacity: 1;
+        }
+
+        button {
+            background: #e11d48;
+            border: none;
+            padding: 8px 15px;
+            color: white;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">MovieStream</div>
+
+        <nav>
+            <a href="#">Trang chủ</a>
+            <a href="#">Phim lẻ</a>
+            <a href="#">Phim bộ</a>
+            <a href="#">Thể loại</a>
+        </nav>
+
+        <div class="search-box">
+            <input type="text" placeholder="Tìm phim...">
+        </div>
+
+    </header>
+
+
+    <div class="banner">
+        <h1>Phim Hot Hôm Nay</h1>
+    </div>
+
+
+    <div class="container">
+
+        <h2>Phim Mới</h2>
+
+        <div class="movies">
+
+            <div class="movie-card">
+                <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg">
+                <div class="movie-info">
+                    <h3>Avengers</h3>
+                    <button>Xem phim</button>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <img src="https://image.tmdb.org/t/p/w500/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg">
+                <div class="movie-info">
+                    <h3>Joker</h3>
+                    <button>Xem phim</button>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg">
+                <div class="movie-info">
+                    <h3>Batman</h3>
+                    <button>Xem phim</button>
+                </div>
+            </div>
+
+            <div class="movie-card">
+                <img src="https://image.tmdb.org/t/p/w500/yF1eOkaYvwiORauRCPWznV9xVvi.jpg">
+                <div class="movie-info">
+                    <h3>Interstellar</h3>
+                    <button>Xem phim</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
